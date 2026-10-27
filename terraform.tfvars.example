@@ -1,0 +1,29 @@
+# terraform.tfvars.example
+# ─────────────────────────────────────────────────────────────────────────────
+# Copy this file to terraform.tfvars and fill in real values.
+# NEVER commit terraform.tfvars to source control — add it to .gitignore.
+# Sensitive values (admin_password) should come from env vars or a secrets
+# manager (e.g. AWS Secrets Manager, HashiCorp Vault) in CI/CD pipelines.
+# ─────────────────────────────────────────────────────────────────────────────
+
+aws_region          = "us-east-1"
+vpc_id              = "vpc-xxxxxxxxxxxxxxxxx"
+subnet_id           = "subnet-xxxxxxxxxxxxxxxxx"
+allowed_cidr_blocks = ["10.0.0.0/8"]   # Restrict to your runner/bastion CIDR
+
+instance_name       = "ws2025-patching"
+instance_type       = "t3.medium"
+root_volume_size_gb = 60
+
+# admin_password — supply via env var instead:
+#   export TF_VAR_admin_password="YourStr0ngP@ss!"
+# admin_password = "CHANGE_ME"
+
+force_repatch = "2025-01"   # Bump to re-trigger patching on existing instance
+
+common_tags = {
+  ManagedBy   = "Terraform"
+  Environment = "patching"
+  OS          = "WindowsServer2025"
+  CostCenter  = "ops"
+}

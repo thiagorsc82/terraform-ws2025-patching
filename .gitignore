@@ -1,0 +1,14 @@
+# Terraform state & secrets
+*.tfstate
+*.tfstate.backup
+*.tfplan
+terraform.tfvars
+.terraform/
+.terraform.lock.hcl
+
+# Runtime logs
+run_logs/
+
+# OS
+.DS_Store
+Thumbs.db
