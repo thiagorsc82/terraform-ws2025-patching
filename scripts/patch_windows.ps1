@@ -54,12 +54,8 @@ if ($wuSvc.Status -ne 'Running') {
 }
 
 # ── Scan for updates ──────────────────────────────────────────────────────────
+# BUG-01 FIX: removed dead double-scan. Single call returns proper objects.
 Write-Log "Scanning for available updates..."
-$updates = Get-WindowsUpdate -AcceptAll -IgnoreReboot -Verbose 2>&1 |
-           Where-Object { $_ -is [Microsoft.Update.UpdateClass] -or
-                          $_.GetType().Name -like '*Update*' }
-
-# Re-run clean to get proper objects
 $availableUpdates = Get-WindowsUpdate -AcceptAll -IgnoreReboot
 
 if ($availableUpdates.Count -eq 0) {

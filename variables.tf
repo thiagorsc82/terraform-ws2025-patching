@@ -61,9 +61,15 @@ variable "admin_password" {
   type        = string
   sensitive   = true
 
+  # WARN-01 FIX: enforce complexity (length + uppercase + digit + special char)
   validation {
-    condition     = length(var.admin_password) >= 12
-    error_message = "admin_password must be at least 12 characters."
+    condition = (
+      length(var.admin_password) >= 12 &&
+      can(regex("[A-Z]", var.admin_password)) &&
+      can(regex("[0-9]", var.admin_password)) &&
+      can(regex("[^a-zA-Z0-9]", var.admin_password))
+    )
+    error_message = "admin_password must be ≥12 chars and contain uppercase, digit, and special character."
   }
 }
 

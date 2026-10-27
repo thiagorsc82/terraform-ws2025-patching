@@ -54,7 +54,8 @@ command -v "${TERRAFORM_BIN}" >/dev/null 2>&1 || {
   err "Terraform binary not found. Install it or set TERRAFORM_BIN env var."
   exit 1
 }
-log "Terraform version: $(${TERRAFORM_BIN} version -json | python3 -c 'import sys,json; print(json.load(sys.stdin)["terraform_version"])' 2>/dev/null || ${TERRAFORM_BIN} version | head -1)"
+# REL-02 FIX: removed python3 dependency; use pure shell/terraform parsing
+log "Terraform version: $(${TERRAFORM_BIN} version | head -1)"
 
 for required_var in TF_VAR_admin_password TF_VAR_vpc_id TF_VAR_subnet_id; do
   if [[ -z "${!required_var:-}" ]]; then
